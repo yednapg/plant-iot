@@ -2,20 +2,18 @@
 #include <Wire.h>
 #include <DHT.h>
 
-// const int buzzer = 10; //buzzer to arduino pin 9
-
 int Contrast = 100;
 LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
 
-int resval = 0;   // holds the value
-int respin = A2;  // sensor pin used
+int resval = 0;   //Holds the value
+int respin = A2;  //Sensor pin used
 
 #define DHTPIN 1
 #define DHTTYPE DHT11  // DHT 11
 DHT dht(DHTPIN, DHTTYPE);
 
-int sensor_pin = A0;  //Sensor Pin
-int relay_pin = 13;   //Relay Pin
+int sensor_pin = A0;  //Sensor pin
+int relay_pin = 13;   //Relay pin
 int ph_sensor_pin = A1;
 
 void setup() {
@@ -25,7 +23,6 @@ void setup() {
   dht.begin();
   pinMode(sensor_pin, INPUT);
   pinMode(relay_pin, OUTPUT);
-  // pinMode(buzzer, OUTPUT); // Set buzzer - pin 9 as an output
 }
 
 void loop() {
@@ -40,22 +37,18 @@ void loop() {
   delay(5000);
   lcd.clear();
 
-  // Water Level
+  // WATER LEVEL
   lcd.setCursor(0, 0);
   resval = analogRead(respin);  //Read data from analog pin and store it to resval variable
   if (resval <= 330) {
-    // Serial.print("Tank Emptry");
     lcd.print("Tank Empty");
   } else if (resval > 330 && resval <= 500) {
-    // Serial.print("Water Level Low");
     lcd.print("Water Level Low");
   } 
   else if (resval > 500) {
-    // Serial.print("Enough Water");
     lcd.print("Enough Water");
   }
   else if (resval > 600) {
-    // Serial.print("No Need to fill the tank");
     lcd.print("No Need to Fill");
     lcd.setCursor(0, 1);
     lcd.print("the Tank");
@@ -69,7 +62,6 @@ void loop() {
   float f = dht.readTemperature(true);
   // Check if any reads failed and exit early (to try again).
   if (isnan(h) || isnan(t) || isnan(f)) {
-    // Serial.println("Failed to read from DHT sensor!");
     return;
   }
 
@@ -83,7 +75,7 @@ void loop() {
   lcd.print(t);
   lcd.print("C");
 
-  // pH value
+  // pH VALUE
   float ph_sensor_data = analogRead(ph_sensor_pin);
   ph_sensor_data = (ph_sensor_data / 100.0);
   if (ph_sensor_data > 8) {
@@ -120,11 +112,4 @@ void loop() {
   }
   delay(5000);
   lcd.clear();
-  // Serial.print("Temperature & Humidity Sensor Data:");
-  // Serial.print("T:");
-  // Serial.println(t);
-  // Serial.print("H:");
-  // Serial.println(h);
-  // Serial.print("Moisture Data");
-  // Serial.println(sensor_data);
 }
